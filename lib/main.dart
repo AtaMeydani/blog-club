@@ -1,4 +1,5 @@
 import 'package:blog_club/data.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 
@@ -29,6 +30,7 @@ class MainApp extends StatelessWidget {
             fontFamily: defaultFontFamily,
             fontWeight: FontWeight.bold,
             color: primaryTextColor,
+            fontSize: 18,
           ),
           headlineMedium: TextStyle(
             fontFamily: defaultFontFamily,
@@ -85,10 +87,122 @@ class HomeScreen extends StatelessWidget {
                   style: themeData.textTheme.headlineMedium,
                 ),
               ),
-              _StoryList(stories: stories, themeData: themeData)
+              _StoryList(stories: stories, themeData: themeData),
+              const SizedBox(
+                height: 20,
+              ),
+              const _CategoryList(),
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _CategoryList extends StatelessWidget {
+  static const categories = AppDatabase.categories;
+  const _CategoryList();
+
+  @override
+  Widget build(BuildContext context) {
+    return CarouselSlider.builder(
+      itemCount: categories.length,
+      itemBuilder: (context, index, realIndex) {
+        return _CategoryItem(
+          left: realIndex == 0 ? 32 : 8,
+          right: realIndex == categories.length - 1 ? 32 : 8,
+          category: categories[realIndex],
+        );
+      },
+      options: CarouselOptions(
+        scrollDirection: Axis.horizontal,
+        viewportFraction: 0.8,
+        aspectRatio: 1.2,
+        initialPage: 0,
+        disableCenter: true,
+        enableInfiniteScroll: false,
+        padEnds: false,
+        enlargeCenterPage: true,
+        enlargeStrategy: CenterPageEnlargeStrategy.scale,
+        scrollPhysics: const BouncingScrollPhysics(),
+      ),
+    );
+  }
+}
+
+class _CategoryItem extends StatelessWidget {
+  final Category category;
+
+  final double left;
+  final double right;
+
+  const _CategoryItem({
+    required this.category,
+    required this.left,
+    required this.right,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.fromLTRB(left, 0, right, 0),
+      child: Stack(
+        children: [
+          Positioned.fill(
+            left: 56,
+            right: 56,
+            top: 100,
+            bottom: 16,
+            child: Container(
+              decoration: const BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    blurRadius: 12,
+                    color: Color(0xff0D253C),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Positioned.fill(
+            child: Container(
+              margin: const EdgeInsets.fromLTRB(0, 0, 0, 16),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(32),
+                color: Colors.black,
+              ),
+              foregroundDecoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(32),
+                gradient: const LinearGradient(
+                  begin: Alignment.bottomCenter,
+                  end: Alignment.center,
+                  colors: [
+                    Color(0xff0D253C),
+                    Colors.transparent,
+                  ],
+                ),
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(32),
+                child: Image.asset(
+                  'assets/img/posts/large/${category.imageFileName}',
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            left: 48,
+            bottom: 48,
+            child: Text(
+              category.title,
+              style: Theme.of(context).textTheme.titleLarge!.apply(
+                    color: Colors.white,
+                  ),
+            ),
+          )
+        ],
       ),
     );
   }
@@ -109,15 +223,16 @@ class _StoryList extends StatelessWidget {
       width: MediaQuery.of(context).size.width,
       height: 90,
       child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemCount: stories.length,
-          physics: const BouncingScrollPhysics(),
-          padding: const EdgeInsets.symmetric(horizontal: 32),
-          itemBuilder: (context, index) {
-            final story = stories[index];
+        scrollDirection: Axis.horizontal,
+        itemCount: stories.length,
+        physics: const BouncingScrollPhysics(),
+        padding: const EdgeInsets.symmetric(horizontal: 32),
+        itemBuilder: (context, index) {
+          final story = stories[index];
 
-            return _Story(story: story, themeData: themeData);
-          }),
+          return _Story(story: story, themeData: themeData);
+        },
+      ),
     );
   }
 }
@@ -148,7 +263,7 @@ class _Story extends StatelessWidget {
                   width: 24,
                   height: 24,
                 ),
-              )
+              ),
             ],
           ),
           const SizedBox(
