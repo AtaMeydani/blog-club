@@ -3,8 +3,15 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 void main() {
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    statusBarColor: Colors.white,
+    statusBarIconBrightness: Brightness.dark,
+    systemNavigationBarColor: Colors.white,
+    systemNavigationBarIconBrightness: Brightness.dark,
+  ));
   runApp(const MainApp());
 }
 
@@ -19,7 +26,19 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Blog Club',
-      home: const HomeScreen(),
+      home: Stack(
+        children: const [
+          Positioned.fill(
+            child: HomeScreen(),
+          ),
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: _BottomNavigation(),
+          ),
+        ],
+      ),
       theme: ThemeData(
         textButtonTheme: const TextButtonThemeData(
           style: ButtonStyle(
@@ -66,6 +85,12 @@ class MainApp extends StatelessWidget {
             fontFamily: defaultFontFamily,
             color: secondaryTextColor,
             fontSize: 12,
+          ),
+          bodySmall: TextStyle(
+            fontFamily: defaultFontFamily,
+            fontWeight: FontWeight.w700,
+            fontSize: 10,
+            color: Color(0xff7B8BB2),
           ),
         ),
       ),
@@ -118,9 +143,9 @@ class HomeScreen extends StatelessWidget {
               ),
               const _CategoryList(),
               const _PostList(),
-              SizedBox(
-                height: 32,
-              )
+              const SizedBox(
+                height: 90,
+              ),
             ],
           ),
         ),
@@ -402,7 +427,7 @@ class _PostList extends StatelessWidget {
             final post = posts[index];
             return _Post(post: post);
           },
-        )
+        ),
       ],
     );
   }
@@ -410,7 +435,6 @@ class _PostList extends StatelessWidget {
 
 class _Post extends StatelessWidget {
   const _Post({
-    super.key,
     required this.post,
   });
 
@@ -419,7 +443,7 @@ class _Post extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 32, vertical: 8),
+      margin: const EdgeInsets.symmetric(horizontal: 32, vertical: 8),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
@@ -470,14 +494,14 @@ class _Post extends StatelessWidget {
                         size: 16,
                         color: Theme.of(context).textTheme.bodyMedium!.color,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 4,
                       ),
                       Text(
                         post.likes,
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 16,
                       ),
                       Icon(
@@ -507,6 +531,100 @@ class _Post extends StatelessWidget {
           )
         ],
       ),
+    );
+  }
+}
+
+class _BottomNavigation extends StatelessWidget {
+  const _BottomNavigation({Key? key}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 85,
+      child: Stack(
+        alignment: Alignment.bottomCenter,
+        children: [
+          Container(
+            height: 65,
+            decoration: BoxDecoration(color: Colors.white, boxShadow: [
+              BoxShadow(
+                blurRadius: 20,
+                color: const Color(0x009B8487).withOpacity(.3),
+              ),
+            ]),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: const [
+                _ButtomNavigationItem(
+                  iconFileName: 'Home.png',
+                  activeIconFileName: 'Home.png',
+                  title: 'Home',
+                ),
+                _ButtomNavigationItem(
+                  iconFileName: 'Articles.png',
+                  activeIconFileName: 'Articles.png',
+                  title: 'Articles',
+                ),
+                SizedBox(
+                  width: 8,
+                ),
+                _ButtomNavigationItem(
+                  iconFileName: 'Search.png',
+                  activeIconFileName: 'Search.png',
+                  title: 'Search',
+                ),
+                _ButtomNavigationItem(
+                  iconFileName: 'Menu.png',
+                  activeIconFileName: 'Menu.png',
+                  title: 'Menu',
+                ),
+              ],
+            ),
+          ),
+          Align(
+            alignment: Alignment.topCenter,
+            child: Container(
+              width: 65,
+              height: 65,
+              decoration: BoxDecoration(
+                color: const Color(0xff376AED),
+                borderRadius: BorderRadius.circular(32.5),
+                border: Border.all(color: Colors.white, width: 4),
+              ),
+              child: Image.asset('assets/img/icons/plus.png'),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class _ButtomNavigationItem extends StatelessWidget {
+  final String iconFileName;
+  final String activeIconFileName;
+  final String title;
+
+  const _ButtomNavigationItem({
+    required this.iconFileName,
+    required this.activeIconFileName,
+    required this.title,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Image.asset('assets/img/icons/$iconFileName'),
+        const SizedBox(
+          height: 4,
+        ),
+        Text(
+          title,
+          style: Theme.of(context).textTheme.bodySmall,
+        ),
+      ],
     );
   }
 }
