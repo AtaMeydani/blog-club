@@ -93,4 +93,19 @@ class AppDatabase {
         time: '41hr ago',
         imageFileName: 'small_post_3.jpg'),
   ];
+
+  static final List<OnboardingItem> onboardingItems = List.generate(
+    4,
+    (index) => const OnboardingItem(
+      'Read the article you want instantly',
+      'You can read thousands of articles on Blog Club, save them in the application and share them with your loved ones.',
+    ),
+  );
+}
+
+class OnboardingItem {
+  final String title;
+  final String description;
+
+  const OnboardingItem(this.title, this.description);
 }

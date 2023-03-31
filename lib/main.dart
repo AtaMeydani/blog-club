@@ -1,5 +1,6 @@
 import 'package:blog_club/gen/assets.gen.dart';
 import 'package:blog_club/gen/fonts.gen.dart';
+import 'package:blog_club/onboarding_screen.dart';
 import 'package:blog_club/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -17,6 +18,7 @@ void main() {
 class MainApp extends StatelessWidget {
   static const primaryTextColor = Color(0xff0D253C);
   static const secondaryTextColor = Color(0xff2D4379);
+  static const primaryColor = Color(0xFF376AED);
   const MainApp({super.key});
 
   @override
@@ -36,8 +38,16 @@ class MainApp extends StatelessWidget {
       //     ),
       //   ],
       // ),
-      home: const SplashScreen(),
+      home: const OnboardingScreen(),
       theme: ThemeData(
+        colorScheme: const ColorScheme.light(
+          primary: primaryColor,
+          onPrimary: Colors.white,
+          onSurface: primaryTextColor,
+          onBackground: primaryTextColor,
+          background: Color(0xFFFBFBFF),
+          surface: Colors.white,
+        ),
         textButtonTheme: const TextButtonThemeData(
           style: ButtonStyle(
             textStyle: MaterialStatePropertyAll(
