@@ -1,3 +1,4 @@
+import 'package:blog_club/auth_screen.dart';
 import 'package:blog_club/gen/assets.gen.dart';
 import 'package:blog_club/gen/fonts.gen.dart';
 import 'package:blog_club/onboarding_screen.dart';
@@ -38,7 +39,8 @@ class MainApp extends StatelessWidget {
       //     ),
       //   ],
       // ),
-      home: const OnboardingScreen(),
+      // home: const OnboardingScreen(),
+      home: const AuthScreen(),
       theme: ThemeData(
         colorScheme: const ColorScheme.light(
           primary: primaryColor,
