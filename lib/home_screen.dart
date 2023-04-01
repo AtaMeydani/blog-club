@@ -1,12 +1,10 @@
 import 'package:blog_club/gen/assets.gen.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dotted_border/dotted_border.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'components/post.dart';
 import 'data.dart';
-import 'gen/fonts.gen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -53,7 +51,7 @@ class HomeScreen extends StatelessWidget {
               const _CategoryList(),
               const _PostList(),
               const SizedBox(
-                height: 90,
+                height: 30,
               ),
             ],
           ),
