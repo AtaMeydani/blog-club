@@ -1,6 +1,6 @@
-import 'package:blog_club/article_screen.dart';
 import 'package:blog_club/data.dart';
 import 'package:blog_club/gen/fonts.gen.dart';
+import 'package:blog_club/search_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +17,7 @@ class Post extends StatelessWidget {
     return InkWell(
       onTap: () => Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => const ArticleScreen(),
+          builder: (context) => const SearchScreen(tabName: 'Home'),
         ),
       ),
       child: Container(

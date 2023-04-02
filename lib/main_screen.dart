@@ -63,30 +63,10 @@ class _MainScreenState extends State<MainScreen> {
               child: IndexedStack(
                 index: currentScreenIndex,
                 children: [
-                  Navigator(
-                    key: _homeKey,
-                    onGenerateRoute: (settings) => MaterialPageRoute(
-                      builder: (context) => const HomeScreen(),
-                    ),
-                  ),
-                  Navigator(
-                    key: _articleKey,
-                    onGenerateRoute: (settings) => MaterialPageRoute(
-                      builder: (context) => const ArticleScreen(),
-                    ),
-                  ),
-                  Navigator(
-                    key: _searchKey,
-                    onGenerateRoute: (settings) => MaterialPageRoute(
-                      builder: (context) => const SearchScreen(),
-                    ),
-                  ),
-                  Navigator(
-                    key: _profileKey,
-                    onGenerateRoute: (settings) => MaterialPageRoute(
-                      builder: (context) => const ProfileScreen(),
-                    ),
-                  ),
+                  _navigator(key: _homeKey, index: homeIndex, child: const HomeScreen()),
+                  _navigator(key: _articleKey, index: articleIndex, child: const ArticleScreen()),
+                  _navigator(key: _searchKey, index: searchIndex, child: const SearchScreen(tabName: 'Search')),
+                  _navigator(key: _profileKey, index: profileIndex, child: const ProfileScreen()),
                 ],
               ),
             ),
@@ -109,6 +89,20 @@ class _MainScreenState extends State<MainScreen> {
         ),
       ),
     );
+  }
+
+  Widget _navigator({required GlobalKey<NavigatorState> key, required int index, required Widget child}) {
+    return key.currentState == null && currentScreenIndex != index
+        ? const SizedBox()
+        : Navigator(
+            key: key,
+            onGenerateRoute: (settings) => MaterialPageRoute(
+              builder: (context) => Offstage(
+                offstage: currentScreenIndex != index,
+                child: child,
+              ),
+            ),
+          );
   }
 }
 
